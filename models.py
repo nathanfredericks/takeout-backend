@@ -246,8 +246,11 @@ class OrderReadSchema(OrderBaseSchema):
     merchant_name: str
     merchant_location: str
     consumer_id: int
+    consumer_name: str
+    consumer_phone_number: str
     courier_id: Optional[int] = None
     courier_name: Optional[str] = None
+    courier_phone_number: Optional[str] = None
     status: OrderStatus
     created_at: datetime
     delivered_at: Optional[datetime] = None

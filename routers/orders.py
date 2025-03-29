@@ -58,8 +58,10 @@ async def list_orders(
     for order in orders:
         order.merchant_name = order.merchant.name
         order.merchant_location = order.merchant.location
+        order.consumer_phone_number = order.consumer.phone_number
         if order.courier:
             order.courier_name = order.courier.name
+            order.courier_phone_number = order.courier.phone_number
 
         total = sum(item.quantity * item.item.price for item in order.items)
         order.total = total
@@ -116,7 +118,9 @@ async def get_order(
     order.merchant_name = order.merchant.name
     order.merchant_location = order.merchant.location
     order.consumer_name = order.consumer.name
+    order.consumer_phone_number = order.consumer.phone_number
     if order.courier:
+        order.courier_phone_number = order.courier.phone_number
         order.courier_name = order.courier.name
 
     total = sum(item.quantity * item.item.price for item in order.items)
@@ -231,7 +235,9 @@ async def get_merchant_order(
 
     order.merchant_name = order.merchant.name
     order.merchant_location = order.merchant.location
+    order.consumer_phone_number = order.consumer.phone_number
     if order.courier:
+        order.courier_phone_number = order.courier.phone_number
         order.courier_name = order.courier.name
 
     total = sum(item.quantity * item.item.price for item in order.items)
@@ -269,8 +275,10 @@ async def list_merchant_orders(
         order.merchant_name = order.merchant.name
         order.merchant_location = order.merchant.location
         order.consumer_name = order.consumer.name
-        if order.courier:
-            order.courier_name = order.courier.name
+        order.consumer_phone_number = order.consumer.phone_number
+    if order.courier:
+        order.courier_phone_number = order.courier.phone_number
+        order.courier_name = order.courier.name
 
         total = sum(item.quantity * item.item.price for item in order.items)
         order.total = total
@@ -380,7 +388,9 @@ async def update_order_status(
     order.merchant_name = order.merchant.name
     order.merchant_location = order.merchant.location
 
+    order.consumer_phone_number = order.consumer.phone_number
     if order.courier:
+        order.courier_phone_number = order.courier.phone_number
         order.courier_name = order.courier.name
 
     total = sum(item.quantity * item.item.price for item in order.items)
