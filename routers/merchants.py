@@ -219,5 +219,40 @@ async def delete_merchant(
             detail="Cannot delete merchant with active orders",
         )
 
+    orders = session.execute(
+        select(Order)
+        .where(Order.merchant_id == merchant_id)
+        .where(
+            Order.status.in_([OrderStatus.DELIVERED, OrderStatus.CANCELLED])
+        )
+    ).scalars().all()
+
+    from models import OrderItem
+    for order in orders:
+        order_items = session.execute(
+            select(OrderItem).where(OrderItem.order_id == order.id)
+        ).scalars().all()
+        
+        for order_item in order_items:
+            session.delete(order_item)
+    
+    for order in orders:
+        session.delete(order)
+
+    items = session.execute(
+        select(Item).where(Item.merchant_id == merchant_id)
+    ).scalars().all()
+    
+    for item in items:
+        order_items = session.execute(
+            select(OrderItem).where(OrderItem.item_id == item.id)
+        ).scalars().all()
+        
+        for order_item in order_items:
+            session.delete(order_item)
+    
+    for item in items:
+        session.delete(item)
+    
     session.delete(merchant)
     session.commit()
